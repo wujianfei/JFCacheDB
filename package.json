@@ -28,9 +28,9 @@
     "JFBaseDB",
     "cacheDB"
   ],
-  "homepage": "https://gitee.com/swordfly/JFBaseDB.git",
+  "homepage": "https://github.com/wujianfei/JFCacheDB.git",
   "repository": {
     "type": "git",
-    "url": "git+https://gitee.com/swordfly/JFBaseDB.git"
+    "url": "git+https://github.com/wujianfei/JFCacheDB.git"
   }
 }
