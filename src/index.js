@@ -22,7 +22,7 @@ import { fingerprint } from './fingerprint';
   }
 })(this, 'dataType', function () {
   'use strict';
-  
+
   /**
    * 默认数据模板
    * @param {*} options
@@ -101,37 +101,48 @@ import { fingerprint } from './fingerprint';
     return JSON.parse(cacheDataStr);
   };
   /**
+   * 将表名转成md5并存储表名
+   * @param {*} cacheObj
+   * @param {*} table
+   * @param {*} cacheData
+   * @param {*} tableName
+   */
+  function setNameByMd5(cacheObj, table, cacheData, tableName) {
+    cacheData.data[tableName] = encryptionName(tableName);
+    cacheObj.setItem(
+      table.tableName,
+      encryptionData(JSON.stringify(cacheData), false)
+    );
+    return cacheData.data[tableName];
+  }
+  /**
    * 构建存储表名的表
    * @param {*} tableName
    */
-  function getNameTable(tableName, options) {
+  export function getNameTable(tableName) {
     const table = {
-      tableName: options.md5Encode(fingerprint()),
+      tableName: encryptionName(getFingerPrint()),
       description: `存储表名的表\n其他表的表名将直接是加密的`,
       cacheType: 1,
     };
     let cacheObj = getCacheType(table.cacheType);
-    let nameObj = JSON.parse(
-      cacheObj.getItem(table.tableName) ||
-        getDefaultTemlate({
-          description: table.description,
-        })
-    );
-    if (nameObj[tableName]) {
-      return nameObj[tableName];
+    let tableValStr = cacheObj.getItem(table.tableName);
+    let cacheDataStr = '';
+    if (tableValStr) {
+      cacheDataStr = encryptionData(tableValStr, true); //解密
+      let cacheData = JSON.parse(cacheDataStr);
+      if (cacheData.data[tableName]) {
+        return cacheData.data[tableName];
+      } else {
+        return setNameByMd5(cacheObj, table, cacheData, tableName);
+      }
     } else {
-      nameObj[tableName] = encryptionName(tableName, {
-        md5Encode: options.md5Encode,
+      cacheDataStr = getDefaultTemlate({
+        description: table.description,
       });
-      cacheObj.setItem(
-        table.tableName,
-        encryptionData(JSON.stringify(nameObj), false, {
-          decodeData: options.decodeData,
-          encodeData: options.encodeData,
-        })
-      );
-      return nameObj[tableName];
     }
+    let cacheData = JSON.parse(cacheDataStr);
+    return setNameByMd5(cacheObj, table, cacheData, tableName);
   }
 
   /**
