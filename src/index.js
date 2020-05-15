@@ -1,3 +1,4 @@
+import { fingerprint } from './fingerprint';
 /*
  * @Author: wujianfei
  * @Date:   2020-05-15 16:05:10
@@ -21,9 +22,10 @@
   }
 })(this, 'dataType', function () {
   'use strict';
+  
   /**
    * 默认数据模板
-   * @param {*} options 
+   * @param {*} options
    */
   function getDefaultTemlate(options) {
     return JSON.stringify({
@@ -33,9 +35,9 @@
     });
   }
   /**
-   * 
-   * @param {*} devCallback 
-   * @param {*} proCallback 
+   *
+   * @param {*} devCallback
+   * @param {*} proCallback
    */
   function getDevCallback(devCallback = () => {}, proCallback = () => {}) {
     if (process.env.NODE_ENV === 'production') {
@@ -49,7 +51,7 @@
    * @param {*} str 字符串值
    * @param {*} isDec false表示加密 true表示解密
    */
-  function encryptionData(str, isDec = false, {decodeData, encodeData}) {
+  function encryptionData(str, isDec = false, { decodeData, encodeData }) {
     return getDevCallback(
       () => {
         return str;
@@ -63,7 +65,7 @@
    * 加密表名
    * @param {*} tableName 表名
    */
-  function encryptionName(tableName, {md5Encode}) {
+  function encryptionName(tableName, { md5Encode }) {
     return getDevCallback(
       () => {
         return tableName;
@@ -91,7 +93,7 @@
     if (tableValStr) {
       cacheDataStr = encryptionData(tableValStr, true, {
         decodeData: options.decodeData,
-        encodeData: options.encodeData
+        encodeData: options.encodeData,
       });
     } else {
       cacheDataStr = getDefaultTemlate(options);
@@ -104,7 +106,7 @@
    */
   function getNameTable(tableName, options) {
     const table = {
-      tableName: options.md5Encode(options.fingerPrint),
+      tableName: options.md5Encode(fingerprint()),
       description: `存储表名的表\n其他表的表名将直接是加密的`,
       cacheType: 1,
     };
@@ -119,13 +121,13 @@
       return nameObj[tableName];
     } else {
       nameObj[tableName] = encryptionName(tableName, {
-        md5Encode: options.md5Encode
+        md5Encode: options.md5Encode,
       });
       cacheObj.setItem(
         table.tableName,
         encryptionData(JSON.stringify(nameObj), false, {
           decodeData: options.decodeData,
-          encodeData: options.encodeData
+          encodeData: options.encodeData,
         })
       );
       return nameObj[tableName];
@@ -138,9 +140,7 @@
    * @param {*} options
    * @param {*} cacheType
    */
-  function BaseDB(
-    table = { description: '', tableName: '', cacheType: 1 }
-  ) {
+  function BaseDB(table = { description: '', tableName: '', cacheType: 1 }) {
     let tableName = getNameTable(table.tableName);
     let cacheObj = getCacheType(table.cacheType);
     let cacheData = getInitCacheData(cacheObj, tableName, {
@@ -233,7 +233,6 @@
       cacheObj.removeItem(tableName);
     };
   }
-
 
   return BaseDB;
 });

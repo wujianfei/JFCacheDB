@@ -1,16 +1,19 @@
-# JFCacheDB(前端缓存工具类)
+### JFCacheDB(前端缓存工具类)
 
-## 概述
+#### 概述
 我们通过浏览器自带的```localStorage```和```sessionStorage```已经能够很方便的对数据进行按需存储，但是没有一个很好的规划，缓存索引将会非常长，数据也很混乱同时你可能会不小心暴露出敏感数据，```JFCacheDB```应运而生，它提供了丰富的接口，并且你将会很容易上手。
 ```JFCacheDB```还提供了开发阶段自动展示数据，生产环境下自动加密数据。
 
 
-## Install(安装)
+#### Install(安装)
 
+```javascript
 npm install --save JFCacheDB
+```
 
-## Usage(使用)
+#### Usage(使用)
 首先，你得定义一个数据表，你可以在config下定义一个表配置：
+
 ```javascript
 export default {
   table_session_sys: {
@@ -20,36 +23,38 @@ export default {
   }
 }
 ```
+
 然后你新建一个```db```对象:
 ```javascript
-const db = new BaseDB(NormalString.table_local_sys, {
+import JFCacheDB from 'JFCacheDB';
+const table = new JFCacheDB(NormalString.table_local_sys, {
   decodeData: () => {}, // 解密数据方法
   encodeData: () => {}, // 加密数据方法
   md5Encode: () => {} // 表加密方法
+  fingerPrint: '' // 指纹
 }, 1);
 ```
 现在，你可以对你得数据在这张表上进行很好的规划和很方便的操作它了。
-- ```db.saveOrUpdate``` 保存数据
-- ```db.removeById``` 删除项
-- ```db.get``` 获取项，你可以传入一个id，并且获取对应的值，比如：
+- ```table.saveOrUpdate``` 保存数据
+- ```table.removeById``` 删除项
+- ```table.get``` 获取项，你可以传入一个id，并且获取对应的值，比如：
 
 ```javascript
 db.get(id, [defaultValue默认值])
 ```
 
-- ```db.getCacheData``` 获取整个table的数据以及表描述信息，索引等
-- ```db.dropCurrentTable``` 删除表
+- ```table.getCacheData``` 获取整个table的数据以及表描述信息，索引等
+- ```table.dropCurrentTable``` 删除表
 
-... 其他内容 ...
 
-## Donation
+#### Donation
 
-...
 
-## Contact me(联系我)
+
+#### Contact me(联系我)
 
 Email: swordfly_cool@163.com
 
-## License
+#### License
 
 [MIT](http://opensource.org/licenses/MIT) Copyright (c) 2018 - forever Naufal Rabbani
