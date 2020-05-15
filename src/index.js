@@ -119,7 +119,7 @@ import { fingerprint } from './fingerprint';
    * 构建存储表名的表
    * @param {*} tableName
    */
-  export function getNameTable(tableName) {
+  function getNameTable(tableName) {
     const table = {
       tableName: encryptionName(getFingerPrint()),
       description: `存储表名的表\n其他表的表名将直接是加密的`,
