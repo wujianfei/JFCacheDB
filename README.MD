@@ -31,7 +31,6 @@ const table = new JFCacheDB(NormalString.table_local_sys, {
   decodeData: () => {}, // 解密数据方法
   encodeData: () => {}, // 加密数据方法
   md5Encode: () => {} // 表加密方法
-  fingerPrint: '' // 指纹
 }, 1);
 ```
 现在，你可以对你得数据在这张表上进行很好的规划和很方便的操作它了。
@@ -46,6 +45,17 @@ db.get(id, [defaultValue默认值])
 - ```table.getCacheData``` 获取整个table的数据以及表描述信息，索引等
 - ```table.dropCurrentTable``` 删除表
 
+加密解密，可以自己定义，也可以使用如下方式引入```crypto-js```库:
+
+```javascript
+import AES from "JFCacheDB/crypto-js/aes";
+import MD5 from "JFCacheDB/crypto-js/md5";
+import ENC from "JFCacheDB/crypto-js/enc-latin1";
+import MODE from "JFCacheDB/crypto-js/mode-ecb";
+import PKCS7 from "JFCacheDB/crypto-js/pad-pkcs7";
+import UTF8 from "JFCacheDB/crypto-js/enc-utf8"
+```
+[具体使用参照地址 https://www.npmjs.com/package/crypto-js](https://www.npmjs.com/package/crypto-js)
 
 #### Donation
 
