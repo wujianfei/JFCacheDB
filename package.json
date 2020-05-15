@@ -1,0 +1,36 @@
+{
+  "name": "jfcachedb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive",
+    "examples": "open ./examples/index.html",
+    "build": "./node_modules/.bin/babel src --out-dir lib"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/polyfill": "^7.8.7",
+    "crypto-js": "^4.0.0",
+    "get-browser-fingerprint": "^1.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2"
+  },
+  "keywords": [
+    "jf",
+    "JFCacheDB",
+    "JFBaseDB",
+    "cacheDB"
+  ],
+  "homepage": "https://gitee.com/swordfly/JFBaseDB.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitee.com/swordfly/JFBaseDB.git"
+  }
+}
