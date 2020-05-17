@@ -8,7 +8,7 @@
 #### Install(安装)
 
 ```javascript
-npm install --save JFCacheDB
+npm i jfcachedb --save
 ```
 
 #### Usage(使用)
@@ -26,7 +26,8 @@ export default {
 
 然后你新建一个```db```对象:
 ```javascript
-import JFCacheDB from 'JFCacheDB';
+import BaseDB from 'jfcachedb';
+
 const table = new JFCacheDB(NormalString.table_local_sys, {
   decodeData: () => {}, // 解密数据方法
   encodeData: () => {}, // 加密数据方法
