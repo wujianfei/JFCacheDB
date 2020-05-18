@@ -23,16 +23,52 @@ export default {
   }
 }
 ```
+自定义一个开发生产环境的方法：
+```javascript
+function getDevCallback(devCallback = () => {}, proCallback = () => {}) {
+  if (process.env.NODE_ENV === 'production') {
+    return proCallback();
+  } else if (process.env.NODE_ENV === 'development') {
+    return devCallback();
+  }
+}
+```
 
 然后你新建一个```db```对象:
 ```javascript
-import BaseDB from 'jfcachedb';
+import { JFcacheDB } from 'jfcachedb';
+let db = new JFcacheDB();
+db.setEncryption({
+  decodeData: (data) => {
+    return getDevCallback(
+      () => data,
+      () => decodeUrl(data)
+    );
+  },
+  encodeData: (data) => {
+    return getDevCallback(
+      () => data,
+      () => encodeUrl(data)
+    );
+  },
+  encodeTableName: (data) => {
+    return getDevCallback(
+      () => data,
+      () => md5Encode(data)
+    );
+  },
+});
 
-const table = new JFCacheDB(NormalString.table_local_sys, {
-  decodeData: () => {}, // 解密数据方法
-  encodeData: () => {}, // 加密数据方法
-  md5Encode: () => {} // 表加密方法
-}, 1);
+let table = db.getTable(TableConst.table_session_sys);
+let table2 = db.getTable(TableConst.table_local_xu);
+table.saveOrUpdate('sansan', {
+  age: 21,
+  name: 'zansan',
+  sex: '男',
+  realName: '张三'
+});
+table2.saveOrUpdate('id', 'xxxxxuuuuuuuuu');
+table2.saveOrUpdate('id2', '3333333');
 ```
 现在，你可以对你得数据在这张表上进行很好的规划和很方便的操作它了。
 - ```table.saveOrUpdate``` 保存数据
@@ -58,10 +94,10 @@ import UTF8 from "jfcachedb/crypto-js/enc-utf8"
 ```
 [具体使用参照地址 https://www.npmjs.com/package/crypto-js](https://www.npmjs.com/package/crypto-js)
 
-#### 更多描述可参考
-[博客](https://www.cnblogs.com/SATinnovation/p/12909254.html)
+##### 更多描述可参考
+[https://www.cnblogs.com/SATinnovation/p/12909254.html](https://www.cnblogs.com/SATinnovation/p/12909254.html)
 
-#### Contact me(联系我)
+##### Contact me(联系我)
 
 Email: swordfly_cool@163.com
 
