@@ -257,8 +257,9 @@
      */
     const Table = function ({ tableName, description, cacheType }) {
       const storage = getStorage(cacheType);
-      const cacheData = initCacheDb(storage, tableName, description);
       const encryptionName = getEncryptionName(tableName);
+      const cacheData = initCacheDb(storage, encryptionName, description);
+      
       /**
        * 排序id
        * @param {*} id
