@@ -1,18 +1,20 @@
-### JFCacheDB(前端缓存工具类)
+<font size=2>
 
-#### 概述
-我们通过浏览器自带的```localStorage```和```sessionStorage```已经能够很方便的对数据进行按需存储，但是没有一个很好的规划，缓存索引将会非常长，数据也很混乱同时你可能会不小心暴露出敏感数据，```JFCacheDB```应运而生，它提供了丰富的接口，并且你将会很容易上手。
-```JFCacheDB```还提供了开发阶段自动展示数据，生产环境下自动加密数据。
+### JFCacheDB
+
+##### summary
+
+We can easily store the data on demand through the local storage and ```sessionstorage``` provided by the browser, but without a good plan, the cache index will be very long, the data will be confused, and you may inadvertently expose sensitive data. ```Jfcachedb``` came into being, which provides a rich interface, and you will be easy to use. ```Jfcachedb``` also provides automatic display of data in the development stage and automatic encryption of data in the production environment.
 
 
-#### Install(安装)
+#### Install
 
 ```javascript
 npm i jfcachedb --save
 ```
 
-#### Usage(使用)
-首先，你得定义一个数据表，你可以在config下定义一个表配置：
+#### Usage
+First, you need to define a data table. You can define a table configuration under config:
 
 ```javascript
 export default {
@@ -23,7 +25,7 @@ export default {
   }
 }
 ```
-自定义一个开发生产环境的方法：
+Customize a way to develop a production environment:
 ```javascript
 function getDevCallback(devCallback = () => {}, proCallback = () => {}) {
   if (process.env.NODE_ENV === 'production') {
@@ -34,9 +36,9 @@ function getDevCallback(devCallback = () => {}, proCallback = () => {}) {
 }
 ```
 
-然后你新建一个```db```对象:
+then you can build a```db```object:
 ```javascript
-import { JFcacheDB } from 'jfcachedb';
+import JFcacheDB from 'jfcachedb';
 let db = new JFcacheDB();
 db.setEncryption({
   decodeData: (data) => {
@@ -70,19 +72,19 @@ table.saveOrUpdate('sansan', {
 table2.saveOrUpdate('id', 'xxxxxuuuuuuuuu');
 table2.saveOrUpdate('id2', '3333333');
 ```
-现在，你可以对你得数据在这张表上进行很好的规划和很方便的操作它了。
-- ```table.saveOrUpdate``` 保存数据
-- ```table.removeById``` 删除项
-- ```table.get``` 获取项，你可以传入一个id，并且获取对应的值，比如：
+Now, you can plan your data well and operate it conveniently.
+- ```table.saveOrUpdate``` update data,it will cover old data
+- ```table.removeById``` delete item
+- ```table.get``` To get the item, you can pass in an ID and get the corresponding value, such as：
 
 ```javascript
-table.get(id, [defaultValue默认值])
+table.get(id, [defaultValue])
 ```
 
-- ```table.getCacheData``` 获取整个table的数据以及表描述信息，索引等
-- ```table.dropCurrentTable``` 删除表
+- ```table.getCacheData``` Get the data of the whole table, table description information, index, etc
+- ```table.dropCurrentTable``` drop table
 
-加密解密，可以自己定义，也可以使用如下方式引入```crypto-js```库:
+Encryption and decryption can be defined by yourself, or you can use the following methods to introduce the 'crypto JS' Library:
 
 ```javascript
 import AES from "jfcachedb/crypto-js/aes";
@@ -92,15 +94,17 @@ import MODE from "jfcachedb/crypto-js/mode-ecb";
 import PKCS7 from "jfcachedb/crypto-js/pad-pkcs7";
 import UTF8 from "jfcachedb/crypto-js/enc-utf8"
 ```
-[具体使用参照地址 https://www.npmjs.com/package/crypto-js](https://www.npmjs.com/package/crypto-js)
+[Specific use reference address https://www.npmjs.com/package/crypto-js](https://www.npmjs.com/package/crypto-js)
 
-##### 更多描述可参考
+#### For further description, please refer to
 [https://www.cnblogs.com/SATinnovation/p/12909254.html](https://www.cnblogs.com/SATinnovation/p/12909254.html)
 
-##### Contact me(联系我)
+#### Contact me
 
 Email: swordfly_cool@163.com
 
 #### License
 
 [MIT](http://opensource.org/licenses/MIT) Copyright (c) 2018 - forever Naufal Rabbani
+
+</font>
