@@ -193,13 +193,13 @@
    * @param {*} str 字符串值
    * @param {*} isDec false表示加密 true表示解密
    */
-  function encryptionData(str, isDec = false, { decodeData, encodeData }) {
+  function encryptionData(str, isDec = false, options) {
     return getDevCallback(
       () => {
         return str;
       },
       () => {
-        return isDec ? decodeData(str) : encodeData(str);
+        return isDec ? options.decodeData(str) : options.encodeData(str);
       }
     );
   }
@@ -207,13 +207,13 @@
    * 加密表名
    * @param {*} tableName 表名
    */
-  function encryptionName(tableName, { md5Encode }) {
+  function encryptionName(tableName, options) {
     return getDevCallback(
       () => {
         return tableName;
       },
       () => {
-        return md5Encode(tableName);
+        return options.md5Encode(tableName);
       }
     );
   }
@@ -233,10 +233,7 @@
     let cacheDataStr = '';
     let tableValStr = cacheObj.getItem(tableName);
     if (tableValStr) {
-      cacheDataStr = encryptionData(tableValStr, true, {
-        decodeData: options.decodeData,
-        encodeData: options.encodeData,
-      });
+      cacheDataStr = encryptionData(tableValStr, true, options);
     } else {
       cacheDataStr = getDefaultTemlate(options);
     }
@@ -249,11 +246,11 @@
    * @param {*} cacheData
    * @param {*} tableName
    */
-  function setNameByMd5(cacheObj, table, cacheData, tableName) {
-    cacheData.data[tableName] = encryptionName(tableName);
+  function setNameByMd5(cacheObj, table, cacheData, tableName, options) {
+    cacheData.data[tableName] = encryptionName(tableName, options);
     cacheObj.setItem(
       table.tableName,
-      encryptionData(JSON.stringify(cacheData), false)
+      encryptionData(JSON.stringify(cacheData), false, options)
     );
     return cacheData.data[tableName];
   }
@@ -261,9 +258,9 @@
    * 构建存储表名的表
    * @param {*} tableName
    */
-  function getNameTable(tableName) {
+  function getNameTable(tableName, options) {
     const table = {
-      tableName: encryptionName(fingerprint()),
+      tableName: encryptionName(fingerprint(), options),
       description: `存储表名的表\n其他表的表名将直接是加密的`,
       cacheType: 1,
     };
@@ -271,12 +268,12 @@
     let tableValStr = cacheObj.getItem(table.tableName);
     let cacheDataStr = '';
     if (tableValStr) {
-      cacheDataStr = encryptionData(tableValStr, true); //解密
+      cacheDataStr = encryptionData(tableValStr, true, options); //解密
       let cacheData = JSON.parse(cacheDataStr);
       if (cacheData.data[tableName]) {
         return cacheData.data[tableName];
       } else {
-        return setNameByMd5(cacheObj, table, cacheData, tableName);
+        return setNameByMd5(cacheObj, table, cacheData, tableName, options);
       }
     } else {
       cacheDataStr = getDefaultTemlate({
@@ -284,7 +281,7 @@
       });
     }
     let cacheData = JSON.parse(cacheDataStr);
-    return setNameByMd5(cacheObj, table, cacheData, tableName);
+    return setNameByMd5(cacheObj, table, cacheData, tableName, options);
   }
 
   /**
@@ -293,10 +290,14 @@
    * @param {*} options
    * @param {*} cacheType
    */
-  function BaseDB(table = { description: '', tableName: '', cacheType: 1 }) {
-    let tableName = getNameTable(table.tableName);
+  function BaseDB(
+    table = { description: '', tableName: '', cacheType: 1 },
+    options
+  ) {
+    let tableName = getNameTable(table.tableName, options);
     let cacheObj = getCacheType(table.cacheType);
     let cacheData = getInitCacheData(cacheObj, tableName, {
+      ...options,
       description: table.description,
     }); // 初始化
 
@@ -327,7 +328,7 @@
       // 加密保存
       cacheObj.setItem(
         tableName,
-        encryptionData(JSON.stringify(cacheData), false)
+        encryptionData(JSON.stringify(cacheData), false, options)
       );
     };
     /**

@@ -40,7 +40,7 @@ const table = new JFCacheDB(NormalString.table_local_sys, {
 - ```table.get``` 获取项，你可以传入一个id，并且获取对应的值，比如：
 
 ```javascript
-db.get(id, [defaultValue默认值])
+table.get(id, [defaultValue默认值])
 ```
 
 - ```table.getCacheData``` 获取整个table的数据以及表描述信息，索引等
@@ -49,12 +49,12 @@ db.get(id, [defaultValue默认值])
 加密解密，可以自己定义，也可以使用如下方式引入```crypto-js```库:
 
 ```javascript
-import AES from "JFCacheDB/crypto-js/aes";
-import MD5 from "JFCacheDB/crypto-js/md5";
-import ENC from "JFCacheDB/crypto-js/enc-latin1";
-import MODE from "JFCacheDB/crypto-js/mode-ecb";
-import PKCS7 from "JFCacheDB/crypto-js/pad-pkcs7";
-import UTF8 from "JFCacheDB/crypto-js/enc-utf8"
+import AES from "jfcachedb/crypto-js/aes";
+import MD5 from "jfcachedb/crypto-js/md5";
+import ENC from "jfcachedb/crypto-js/enc-latin1";
+import MODE from "jfcachedb/crypto-js/mode-ecb";
+import PKCS7 from "jfcachedb/crypto-js/pad-pkcs7";
+import UTF8 from "jfcachedb/crypto-js/enc-utf8"
 ```
 [具体使用参照地址 https://www.npmjs.com/package/crypto-js](https://www.npmjs.com/package/crypto-js)
 
