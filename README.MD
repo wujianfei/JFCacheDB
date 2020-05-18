@@ -58,9 +58,8 @@ import UTF8 from "jfcachedb/crypto-js/enc-utf8"
 ```
 [具体使用参照地址 https://www.npmjs.com/package/crypto-js](https://www.npmjs.com/package/crypto-js)
 
-#### Donation
-
-
+#### 更多描述可参考
+[博客](https://www.cnblogs.com/SATinnovation/p/12909254.html)
 
 #### Contact me(联系我)
 
